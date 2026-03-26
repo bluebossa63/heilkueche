@@ -1,0 +1,31 @@
+node_modules/
+.next/
+dist/
+.env
+.env.local
+.env.*.local
+seed/.env
+*.tgz
+fix-deps.js
+fix-next.js
+*.log
+.turbo/
+.DS_Store
+out/
+*.tsbuildinfo
+
+# Terraform
+infra/terraform/.terraform/
+infra/terraform/.terraform.lock.hcl
+infra/terraform/terraform.tfvars
+infra/terraform/*.tfstate
+infra/terraform/*.tfstate.backup
+infra/terraform/tfplan
+
+# Superseded / one-time scripts
+infra/main.bicep
+infra/parameters.json
+infra/setup.sh
+
+# Azure publish profiles (contain credentials)
+infra/*.PublishSettings

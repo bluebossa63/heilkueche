@@ -1,0 +1,9 @@
+{
+  "name": "heilkueche-seed",
+  "private": true,
+  "scripts": { "seed": "node seed-heilkueche.js" },
+  "dependencies": {
+    "@azure/cosmos": "^4.0.0",
+    "uuid": "^9.0.1"
+  }
+}

@@ -1,0 +1,59 @@
+name: Deploy Heilkueche to Azure
+
+on:
+  push:
+    branches: [main]
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  deploy-api:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run build --workspace=packages/shared
+      - run: npm run build --workspace=apps/api
+      - name: Bundle API with production dependencies
+        run: |
+          mkdir -p deploy-api
+          cp -r apps/api/dist/. deploy-api/
+          node -e "
+            const pkg = require('./apps/api/package.json');
+            delete pkg.dependencies['@heilkueche/shared'];
+            delete pkg.devDependencies;
+            pkg.scripts = { start: 'node index.js' };
+            require('fs').writeFileSync('./deploy-api/package.json', JSON.stringify(pkg, null, 2));
+          "
+          cd deploy-api && npm install --production --ignore-scripts
+      - uses: azure/webapps-deploy@v3
+        with:
+          app-name: heilkueche-api-prod
+          publish-profile: ${{ secrets.AZURE_API_PUBLISH_PROFILE }}
+          package: deploy-api
+
+  deploy-web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run build --workspace=packages/shared
+      - run: npm run build --workspace=apps/web
+        env:
+          NEXT_PUBLIC_API_URL: ${{ secrets.API_URL || 'https://heilkueche-api-prod.azurewebsites.net/api' }}
+      - uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_TOKEN }}
+          action: upload
+          app_location: apps/web/out
+          skip_app_build: true
+          is_static_export: true

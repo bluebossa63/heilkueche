@@ -1,0 +1,249 @@
+'use client';
+import { useEffect, useState, Suspense } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { api } from '@/lib/api';
+import { ShareMenu } from '@/components/ShareMenu';
+import { useConfirm } from '@/hooks/useConfirm';
+import { NutritionPanel } from '@/components/NutritionPanel';
+import { CommentThread } from '@/components/CommentThread';
+import { SkeletonText } from '@/components/ui/SkeletonLoader';
+import { Toast, useToast } from '@/components/ui/Toast';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
+import { useAuth } from '@/lib/auth';
+import BackButton from '@/components/BackButton';
+
+export default function RecipeDetailPage() {
+  return (
+    <ProtectedRoute>
+      <Suspense fallback={<div className="max-w-3xl mx-auto px-4 py-8"><SkeletonText lines={8} /></div>}>
+        <RecipeDetail />
+      </Suspense>
+    </ProtectedRoute>
+  );
+}
+
+function RecipeDetail() {
+  const params = useSearchParams();
+  const router = useRouter();
+  const { user } = useAuth();
+  const id = params.get('id');
+  const [recipe, setRecipe] = useState<any>(null);
+  const [comments, setComments] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [saved, setSaved] = useState(false);
+  const [showPlanPicker, setShowPlanPicker] = useState(false);
+  const { toast, show, hide } = useToast();
+  const { confirm: confirmDialog, dialog: confirmDialogEl } = useConfirm();
+
+  useEffect(() => {
+    if (!id) { router.push('/recipes'); return; }
+    Promise.all([
+      api.recipes.get(id).then(d => setRecipe(d.recipe)).catch(() => {}),
+      api.recipes.getComments(id).then(d => setComments(d.comments)).catch(() => {}),
+    ]).finally(() => setLoading(false));
+  }, [id]);
+
+  const SLOT_DE: Record<string, string> = {
+    breakfast: 'Frühstück', lunch: 'Mittagessen', dinner: 'Abendessen', snacks: 'Snack',
+  };
+
+  async function handleQuickAdd() {
+    try {
+      const { slot } = await api.recipes.quickAdd(id!);
+      show(`Zu ${SLOT_DE[slot] || slot} hinzugefügt!`, 'success');
+    } catch { show('Hinzufügen fehlgeschlagen', 'error'); }
+  }
+
+  async function handleDelete() {
+    if (!id || !await confirmDialog('Rezept wirklich löschen?')) return;
+    try {
+      await api.recipes.delete(id);
+      router.push('/recipes');
+    } catch { show('Löschen fehlgeschlagen', 'error'); }
+  }
+
+  async function handleSave() {
+    if (!id) return;
+    try {
+      if (saved) {
+        await api.users.unsaveRecipe(id);
+        setSaved(false);
+        show('Aus gespeicherten Rezepten entfernt', 'success');
+      } else {
+        await api.users.saveRecipe(id);
+        setSaved(true);
+        show('Rezept gespeichert!', 'success');
+      }
+    } catch { show('Gespeicherten Status konnte nicht aktualisiert werden', 'error'); }
+  }
+
+  if (loading) return (
+    <div className="max-w-3xl mx-auto px-4 py-8">
+      <SkeletonText lines={8} />
+    </div>
+  );
+
+  if (!recipe) return (
+    <div className="max-w-3xl mx-auto px-4 py-12 text-center">
+      <p className="text-charcoal-400 text-lg">Rezept nicht gefunden.</p>
+      <Link href="/recipes" className="btn-primary mt-4 inline-block">Zurück zu den Rezepten</Link>
+    </div>
+  );
+
+  const totalTime = recipe.prepTimeMinutes + recipe.cookTimeMinutes;
+
+  return (
+    <main className="max-w-3xl mx-auto px-4 py-8">
+      <BackButton />
+      {toast && <Toast message={toast.message} type={toast.type} onClose={hide} />}
+
+      {/* Hero */}
+      {recipe.imageUrl ? (
+        <img src={recipe.imageUrl} alt={recipe.title} className="w-full h-64 object-cover rounded-2xl mb-6" />
+      ) : (
+        <div className="w-full h-64 bg-gradient-to-br from-rose-light to-pistachio-light rounded-2xl mb-6 flex items-center justify-center text-6xl">
+          🍽️
+        </div>
+      )}
+
+      {/* Title + meta */}
+      <div className="mb-6">
+        <span className="inline-block px-3 py-1 bg-rose-light text-charcoal text-xs font-semibold rounded-full tracking-wide mb-3">
+          {{ breakfast:'Frühstück', lunch:'Mittagessen', dinner:'Abendessen', snack:'Snack', dessert:'Dessert', smoothie:'Smoothie' }[recipe.category as string] || recipe.category}
+        </span>
+        <div className="flex items-start justify-between gap-4">
+          <h1 className="font-display text-3xl text-charcoal-800 leading-tight">{recipe.title}</h1>
+          <div className="flex items-center gap-2 shrink-0">
+            {user?.id === recipe?.authorId && (
+              <>
+                <Link href={`/recipes/edit?id=${recipe.id}`} className="btn-secondary text-sm px-3 py-1.5">
+                  ✏️ Bearbeiten
+                </Link>
+                <button
+                  onClick={handleDelete}
+                  className="btn-ghost text-sm px-3 py-1.5 text-red-500 hover:text-red-700"
+                >
+                  🗑 Löschen
+                </button>
+              </>
+            )}
+            <ShareMenu
+              text={`Schau dir dieses Rezept an: ${recipe.title} 🥗\n\n${recipe.description}\n\n${typeof window !== 'undefined' ? window.location.href : ''}`}
+              title={recipe.title}
+            />
+            <button
+              onClick={handleSave}
+              className={`text-2xl transition-colors ${saved ? 'text-regency-dark' : 'text-charcoal-300 hover:text-regency-400'}`}
+            >
+              {saved ? '♥' : '♡'}
+            </button>
+          </div>
+        </div>
+        <p className="text-charcoal-500 mt-2 leading-relaxed">{recipe.description}</p>
+        <div className="flex flex-wrap gap-4 mt-4 text-sm text-charcoal-500">
+          <span>⏱ {totalTime} min</span>
+          <span>👤 {recipe.servings} Portionen</span>
+          {recipe.estimatedCostEur > 0 && <span>💰 CHF {recipe.estimatedCostEur.toFixed(2)}</span>}
+          {recipe.tags?.map((t: string) => (
+            <span key={t} className="px-2 py-0.5 bg-cream-100 rounded-full text-xs">{t}</span>
+          ))}
+        </div>
+        <div className="flex gap-3 mt-4 relative">
+          <button onClick={handleQuickAdd} className="btn-primary flex-1">
+            Für heute planen
+          </button>
+          <button onClick={() => setShowPlanPicker(!showPlanPicker)} className="btn-secondary flex-1">
+            Zum Planer hinzufügen
+          </button>
+          {showPlanPicker && (
+            <>
+              <div className="fixed inset-0 z-40" onClick={() => setShowPlanPicker(false)} />
+              <div className="absolute top-full right-0 mt-2 z-50 bg-white rounded-xl shadow-lg border border-cream-dark p-4 min-w-[260px]">
+                <p className="text-sm font-medium text-charcoal mb-3">Tag & Mahlzeit wählen:</p>
+                <div className="space-y-2">
+                  {Array.from({ length: 7 }, (_, i) => {
+                    const d = new Date();
+                    d.setDate(d.getDate() + i);
+                    const dateStr = d.toISOString().slice(0, 10);
+                    const dayLabel = d.toLocaleDateString('de-DE', { weekday: 'short', day: 'numeric', month: 'short' });
+                    return (
+                      <div key={dateStr}>
+                        <p className="text-xs text-charcoal-light font-medium">{dayLabel}</p>
+                        <div className="flex gap-1 mt-0.5">
+                          {(['breakfast', 'lunch', 'dinner'] as const).map(slot => (
+                            <button
+                              key={slot}
+                              onClick={async () => {
+                                setShowPlanPicker(false);
+                                try {
+                                  const { mealPlan } = await api.mealPlans.current();
+                                  await api.mealPlans.updateSlot(mealPlan.id, dateStr, slot, recipe);
+                                  show(`${SLOT_DE[slot]} am ${dayLabel} geplant!`, 'success');
+                                } catch { show('Planen fehlgeschlagen', 'error'); }
+                              }}
+                              className="text-xs px-2.5 py-1.5 rounded-lg bg-cream hover:bg-regency-light transition-colors flex-1"
+                            >
+                              {SLOT_DE[slot]}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* Ingredients */}
+      <section className="card p-6 mb-6">
+        <h2 className="font-display text-xl text-charcoal-800 mb-4">Zutaten</h2>
+        <ul className="space-y-2">
+          {recipe.ingredients?.map((ing: any, i: number) => (
+            <li key={i} className="flex items-center justify-between text-sm">
+              <span className="text-charcoal-700">{ing.name}</span>
+              <div className="flex items-center gap-4 text-charcoal-400">
+                <span>{ing.quantity} {ing.unit}</span>
+                {ing.calories && <span>{ing.calories} kcal</span>}
+                {ing.estimatedCostEur && <span>CHF {ing.estimatedCostEur.toFixed(2)}</span>}
+              </div>
+            </li>
+          ))}
+        </ul>
+        {recipe.estimatedCostEur > 0 && (
+          <div className="border-t border-cream-200 mt-4 pt-3 flex justify-between text-sm font-semibold text-charcoal-700">
+            <span>Gesamtkosten</span>
+            <span>CHF {recipe.estimatedCostEur.toFixed(2)} (CHF {(recipe.estimatedCostEur / recipe.servings).toFixed(2)} / Portion)</span>
+          </div>
+        )}
+      </section>
+
+      {/* Nutrition */}
+      {recipe.nutrition && <div className="mb-6"><NutritionPanel nutrition={recipe.nutrition} servings={recipe.servings} /></div>}
+
+      {/* Instructions */}
+      <section className="card p-6 mb-6">
+        <h2 className="font-display text-xl text-charcoal-800 mb-4">Zubereitung</h2>
+        <ol className="space-y-4">
+          {recipe.instructions?.map((step: string, i: number) => (
+            <li key={i} className="flex gap-4">
+              <span className="shrink-0 w-7 h-7 rounded-full bg-regency-light text-regency-dark text-sm font-bold flex items-center justify-center">
+                {i + 1}
+              </span>
+              <p className="text-charcoal-700 leading-relaxed pt-0.5">{step}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      {/* Comments */}
+      <section className="card p-6">
+        <CommentThread recipeId={id!} initialComments={comments} />
+      </section>
+      {confirmDialogEl}
+    </main>
+  );
+}
