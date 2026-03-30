@@ -58,7 +58,7 @@ function FeedbackForm() {
         <div className="text-6xl mb-4">💝</div>
         <h1 className="font-heading text-3xl text-charcoal mb-3">Vielen Dank!</h1>
         <p className="text-charcoal-light mb-6">
-          Deine Rückmeldung hilft uns, Heilkueche noch besser zu machen.
+          Deine Rückmeldung hilft uns, Heilküche noch besser zu machen.
           Wir schätzen deine Meinung sehr!
         </p>
         <Button onClick={() => { setSubmitted(false); setMessage(''); setRating(0); }}>
@@ -80,7 +80,7 @@ function FeedbackForm() {
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Rating */}
         <Card className="p-5">
-          <h2 className="font-medium text-charcoal mb-3">Wie gefällt dir Heilkueche?</h2>
+          <h2 className="font-medium text-charcoal mb-3">Wie gefällt dir Heilküche?</h2>
           <div className="flex justify-between">
             {RATINGS.map(r => (
               <button

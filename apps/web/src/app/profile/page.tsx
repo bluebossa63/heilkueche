@@ -17,17 +17,17 @@ const HEALTH_CONDITIONS = [
   { id: 'diabetes-typ-2', label: 'Diabetes Typ 2', icon: '🩸' },
   { id: 'hohes-cholesterin', label: 'Hohes Cholesterin', icon: '🫀' },
   { id: 'verdauungsbeschwerden', label: 'Verdauungsbeschwerden', icon: '🫁' },
-  { id: 'entzuendungen-arthrose', label: 'Entzuendungen / Arthrose', icon: '🦴' },
+  { id: 'entzuendungen-arthrose', label: 'Entzündungen / Arthrose', icon: '🦴' },
   { id: 'eisenmangel', label: 'Eisenmangel', icon: '🔴' },
-  { id: 'uebergewicht', label: 'Uebergewicht', icon: '⚖️' },
-  { id: 'migraene', label: 'Migraene', icon: '🧠' },
+  { id: 'uebergewicht', label: 'Übergewicht', icon: '⚖️' },
+  { id: 'migraene', label: 'Migräne', icon: '🧠' },
 ];
 
 const ACTIVITY_LEVELS = [
-  { value: 'sedentary', label: 'Wenig aktiv (Bueroarbeit)' },
+  { value: 'sedentary', label: 'Wenig aktiv (Büroarbeit)' },
   { value: 'light', label: 'Leicht aktiv (1-2x Sport/Woche)' },
-  { value: 'moderate', label: 'Maessig aktiv (3-5x Sport/Woche)' },
-  { value: 'active', label: 'Sehr aktiv (taeglicher Sport)' },
+  { value: 'moderate', label: 'Mässig aktiv (3-5x Sport/Woche)' },
+  { value: 'active', label: 'Sehr aktiv (täglicher Sport)' },
   { value: 'very_active', label: 'Extrem aktiv (Leistungssport)' },
 ];
 
@@ -41,7 +41,7 @@ function getBMICategory(bmi: number): { label: string; color: string } {
   if (bmi === 0) return { label: '', color: '' };
   if (bmi < 18.5) return { label: 'Untergewicht', color: 'text-secondary' };
   if (bmi < 25) return { label: 'Normalgewicht', color: 'text-primary' };
-  if (bmi < 30) return { label: 'Uebergewicht', color: 'text-accent-dark' };
+  if (bmi < 30) return { label: 'Übergewicht', color: 'text-accent-dark' };
   return { label: 'Adipositas', color: 'text-red-500' };
 }
 
@@ -164,9 +164,9 @@ function Profile() {
             <div>
               <label className="block text-sm font-medium text-charcoal mb-1">Geschlecht</label>
               <select value={gender} onChange={e => setGender(e.target.value)} className="input-field">
-                <option value="">-- waehlen --</option>
+                <option value="">-- wählen --</option>
                 <option value="female">Weiblich</option>
-                <option value="male">Maennlich</option>
+                <option value="male">Männlich</option>
                 <option value="other">Divers</option>
               </select>
             </div>
@@ -177,7 +177,7 @@ function Profile() {
         <div className="card p-6">
           <h2 className="font-heading text-xl text-charcoal mb-2">Meine Gesundheitsthemen</h2>
           <p className="text-sm text-charcoal-light mb-4">
-            Waehle deine Gesundheitsthemen, um personalisierte Rezeptempfehlungen zu erhalten.
+            Wähle deine Gesundheitsthemen, um personalisierte Rezeptempfehlungen zu erhalten.
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {HEALTH_CONDITIONS.map(c => (
@@ -195,14 +195,14 @@ function Profile() {
           </div>
           <div className="bg-accent/10 border border-accent/30 rounded-xl p-3 mt-4">
             <p className="text-xs text-charcoal-light">
-              Diese App ersetzt keine aerztliche Beratung. Besprechen Sie Ernaehrungsumstellungen mit Ihrem Arzt.
+              Diese App ersetzt keine ärztliche Beratung. Besprechen Sie Ernährungsumstellungen mit Ihrem Arzt.
             </p>
           </div>
         </div>
 
         {/* Body & Health */}
         <div className="card p-6">
-          <h2 className="font-heading text-xl text-charcoal mb-4">Koerper &amp; Gesundheit</h2>
+          <h2 className="font-heading text-xl text-charcoal mb-4">Körper &amp; Gesundheit</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-medium text-charcoal mb-1">Geburtsjahr</label>
@@ -210,7 +210,7 @@ function Profile() {
                 className="input-field" placeholder="z.B. 1985" min="1930" max="2020" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-charcoal mb-1">Groesse (cm)</label>
+              <label className="block text-sm font-medium text-charcoal mb-1">Grösse (cm)</label>
               <input type="number" value={heightCm} onChange={e => setHeightCm(e.target.value ? Number(e.target.value) : '')}
                 className="input-field" placeholder="z.B. 172" min="100" max="250" />
             </div>
@@ -220,7 +220,7 @@ function Profile() {
                 className="input-field" placeholder="z.B. 75" min="30" max="300" step="0.1" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-charcoal mb-1">Aktivitaetslevel</label>
+              <label className="block text-sm font-medium text-charcoal mb-1">Aktivitätslevel</label>
               <select value={activityLevel} onChange={e => setActivityLevel(e.target.value)} className="input-field">
                 {ACTIVITY_LEVELS.map(a => <option key={a.value} value={a.value}>{a.label}</option>)}
               </select>
@@ -239,7 +239,7 @@ function Profile() {
               )}
               {dailyCal > 0 && (
                 <div className="bg-sage rounded-xl p-4 text-center">
-                  <p className="text-xs text-charcoal-light mb-1">Taeglicher Kalorienbedarf</p>
+                  <p className="text-xs text-charcoal-light mb-1">Täglicher Kalorienbedarf</p>
                   <p className="text-2xl font-bold text-primary">{dailyCal}</p>
                   <p className="text-xs text-charcoal-light mt-1">kcal / Tag</p>
                 </div>
@@ -250,7 +250,7 @@ function Profile() {
 
         {/* Dietary Preferences */}
         <div className="card p-6">
-          <h2 className="font-heading text-xl text-charcoal mb-4">Ernaehrungsweise</h2>
+          <h2 className="font-heading text-xl text-charcoal mb-4">Ernährungsweise</h2>
           <div className="flex flex-wrap gap-2">
             {DIETARY_OPTIONS.map(pref => (
               <button key={pref} type="button" onClick={() => toggleDietary(pref)}

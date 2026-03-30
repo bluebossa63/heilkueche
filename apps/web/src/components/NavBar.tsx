@@ -24,7 +24,7 @@ export function NavBar() {
     <header className="sticky top-0 z-50 bg-cream/90 backdrop-blur border-b border-primary/10">
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/" className="font-heading text-xl font-bold text-primary-dark tracking-tight">
-          Heilkueche
+          Heilküche
         </Link>
 
         <nav className="hidden md:flex items-center gap-6">

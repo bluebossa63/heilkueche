@@ -2,7 +2,7 @@
 
 const CATEGORIES = ['breakfast', 'lunch', 'dinner', 'snack', 'dessert', 'smoothie'] as const;
 const CATEGORY_LABELS: Record<string, string> = {
-  breakfast: 'Fruehstueck', lunch: 'Mittagessen', dinner: 'Abendessen',
+  breakfast: 'Frühstück', lunch: 'Mittagessen', dinner: 'Abendessen',
   snack: 'Snack', dessert: 'Dessert', smoothie: 'Smoothie',
 };
 
@@ -20,12 +20,12 @@ const TAGS = [
 const HEALTH_TAGS = [
   { id: 'herzfreundlich', label: '❤️ Herzfreundlich' },
   { id: 'blutzuckerfreundlich', label: '🩸 Blutzuckerfreundlich' },
-  { id: 'entzuendungshemmend', label: '🦴 Entzuendungshemmend' },
+  { id: 'entzuendungshemmend', label: '🦴 Entzündungshemmend' },
   { id: 'eisenreich', label: '🔴 Eisenreich' },
   { id: 'cholesterinsenkend', label: '🫀 Cholesterinsenkend' },
-  { id: 'verdauungsfoerdernd', label: '🫁 Verdauungsfoerdernd' },
+  { id: 'verdauungsfoerdernd', label: '🫁 Verdauungsfördernd' },
   { id: 'kalorienarm', label: '⚖️ Kalorienarm' },
-  { id: 'migraenefreundlich', label: '🧠 Migraenefreundlich' },
+  { id: 'migraenefreundlich', label: '🧠 Migränefreundlich' },
 ];
 
 export interface Filters {
@@ -133,7 +133,7 @@ export function FilterPanel({ filters, onChange }: Props) {
         onClick={() => onChange({ category: '', tag: '', healthTag: '', maxCalories: 1500, maxPrepTime: 120, maxCost: 30 })}
         className="text-xs text-charcoal-light hover:text-primary transition-colors text-left"
       >
-        Filter zuruecksetzen
+        Filter zurücksetzen
       </button>
     </div>
   );

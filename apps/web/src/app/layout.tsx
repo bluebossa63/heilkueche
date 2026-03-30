@@ -22,8 +22,8 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: { default: 'Heilkueche', template: '%s | Heilkueche' },
-  description: 'Gesund essen. Besser leben. Ernaehrung gezielt bei Gesundheitsthemen einsetzen.',
+  title: { default: 'Heilküche', template: '%s | Heilküche' },
+  description: 'Gesund essen. Besser leben. Ernährung gezielt bei Gesundheitsthemen einsetzen.',
   manifest: '/manifest.json',
   themeColor: '#2E7D5F',
   viewport: { width: 'device-width', initialScale: 1 },

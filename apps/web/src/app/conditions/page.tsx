@@ -33,7 +33,7 @@ export default function ConditionsPage() {
       <div className="mb-8 text-center">
         <h1 className="font-heading text-4xl text-charcoal mb-3">Gesundheitsthemen</h1>
         <p className="text-charcoal-light max-w-xl mx-auto">
-          Waehle ein Gesundheitsthema, um zu erfahren, welche Ernaehrung helfen kann
+          Wähle ein Gesundheitsthema, um zu erfahren, welche Ernährung helfen kann
           und welche Rezepte dazu passen.
         </p>
       </div>
@@ -41,7 +41,7 @@ export default function ConditionsPage() {
       {/* Disclaimer */}
       <div className="bg-accent/10 border border-accent/30 rounded-xl p-4 mb-8 max-w-2xl mx-auto">
         <p className="text-xs text-charcoal-light text-center">
-          Diese App ersetzt keine aerztliche Beratung. Bei gesundheitlichen Beschwerden wenden Sie sich bitte an Ihren Arzt oder Ihre Aerztin.
+          Diese App ersetzt keine ärztliche Beratung. Bei gesundheitlichen Beschwerden wenden Sie sich bitte an Ihren Arzt oder Ihre Ärztin.
         </p>
       </div>
 
@@ -52,7 +52,7 @@ export default function ConditionsPage() {
       ) : conditions.length === 0 ? (
         <div className="text-center py-16">
           <div className="text-5xl mb-4">🩺</div>
-          <h3 className="font-heading text-xl text-charcoal mb-2">Noch keine Gesundheitsthemen verfuegbar</h3>
+          <h3 className="font-heading text-xl text-charcoal mb-2">Noch keine Gesundheitsthemen verfügbar</h3>
           <p className="text-charcoal-light text-sm">Daten werden geladen...</p>
         </div>
       ) : (

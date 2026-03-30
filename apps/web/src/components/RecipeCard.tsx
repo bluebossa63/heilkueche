@@ -6,12 +6,12 @@ import { useToast } from '@/components/ui/Toast';
 import { Toast } from '@/components/ui/Toast';
 
 const CATEGORY_DE: Record<string, string> = {
-  breakfast: 'Fruehstueck', lunch: 'Mittagessen', dinner: 'Abendessen',
+  breakfast: 'Frühstück', lunch: 'Mittagessen', dinner: 'Abendessen',
   snack: 'Snack', dessert: 'Dessert', smoothie: 'Smoothie',
 };
 
 const SLOT_DE: Record<string, string> = {
-  breakfast: 'Fruehstueck', lunch: 'Mittagessen', dinner: 'Abendessen', snacks: 'Snack',
+  breakfast: 'Frühstück', lunch: 'Mittagessen', dinner: 'Abendessen', snacks: 'Snack',
 };
 
 const HEALTH_TAG_LABELS: Record<string, string> = {
@@ -56,7 +56,7 @@ export function RecipeCard({ recipe, onSaveToggle, saved = false }: Props) {
     setIsAdding(true);
     try {
       const { slot } = await api.recipes.quickAdd(recipe.id);
-      show(`Zu ${SLOT_DE[slot] || slot} hinzugefuegt!`, 'success');
+      show(`Zu ${SLOT_DE[slot] || slot} hinzugefügt!`, 'success');
     } catch {
       show('Bitte zuerst anmelden', 'error');
     } finally {
@@ -134,7 +134,7 @@ export function RecipeCard({ recipe, onSaveToggle, saved = false }: Props) {
                 disabled={isAdding}
                 className="btn-primary text-xs py-2 flex-1"
               >
-                {isAdding ? '...' : 'Fuer heute'}
+                {isAdding ? '...' : 'Für heute'}
               </button>
               <button
                 onClick={(e) => { e.preventDefault(); setShowPlanPicker(!showPlanPicker); }}
@@ -146,7 +146,7 @@ export function RecipeCard({ recipe, onSaveToggle, saved = false }: Props) {
                 <>
                   <div className="fixed inset-0 z-40" onClick={(e) => { e.preventDefault(); setShowPlanPicker(false); }} />
                   <div className="absolute bottom-full right-0 mb-1 z-50 bg-white rounded-xl shadow-lg border border-sage-dark p-3 min-w-[220px]" onClick={e => e.preventDefault()}>
-                    <p className="text-xs font-medium text-charcoal mb-2">Tag &amp; Mahlzeit waehlen:</p>
+                    <p className="text-xs font-medium text-charcoal mb-2">Tag &amp; Mahlzeit wählen:</p>
                     <div className="max-h-48 overflow-y-auto space-y-1">
                       {Array.from({ length: 7 }, (_, i) => {
                         const d = new Date();

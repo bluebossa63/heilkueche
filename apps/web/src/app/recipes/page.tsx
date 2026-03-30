@@ -77,7 +77,7 @@ function RecipesContent() {
       <div className="mb-8 flex items-start justify-between">
         <div>
           <h1 className="font-heading text-4xl text-charcoal mb-2">Rezepte</h1>
-          <p className="text-charcoal-light">Entdecke gesunde Mahlzeiten fuer deine Gesundheitsthemen</p>
+          <p className="text-charcoal-light">Entdecke gesunde Mahlzeiten für deine Gesundheitsthemen</p>
         </div>
         <div className="flex gap-2">
           <Link href="/recipes/new" className="btn-primary flex items-center gap-1 whitespace-nowrap">

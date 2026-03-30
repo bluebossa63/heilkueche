@@ -6,37 +6,37 @@ const features = [
   {
     icon: '🩺',
     title: 'Gesundheitsthemen',
-    description: 'Entdecke, welche Ernaehrung bei Bluthochdruck, Diabetes, Cholesterin und mehr hilft.',
+    description: 'Entdecke, welche Ernährung bei Bluthochdruck, Diabetes, Cholesterin und mehr hilft.',
     href: '/conditions',
   },
   {
     icon: '🥗',
     title: 'Gesunde Rezepte',
-    description: 'Hunderte Rezepte mit Gesundheits-Tags, Naehrwertangaben und Kostenuebersicht.',
+    description: 'Hunderte Rezepte mit Gesundheits-Tags, Nährwertangaben und Kostenübersicht.',
     href: '/recipes',
   },
   {
     icon: '📅',
     title: 'Mahlzeitenplaner',
-    description: 'Plane deine Woche mit dem Drag-and-Drop-Planer und behalte den Ueberblick.',
+    description: 'Plane deine Woche mit dem Drag-and-Drop-Planer und behalte den Überblick.',
     href: '/meal-planner',
   },
   {
     icon: '🛒',
     title: 'Smarte Einkaufsliste',
-    description: 'Generiere deine Einkaufsliste automatisch aus dem woechentlichen Mahlzeitenplan.',
+    description: 'Generiere deine Einkaufsliste automatisch aus dem wöchentlichen Mahlzeitenplan.',
     href: '/shopping-list',
   },
   {
     icon: '🧠',
     title: 'Wissen',
-    description: 'Verstehe die Zusammenhaenge zwischen Ernaehrung und Gesundheit.',
+    description: 'Verstehe die Zusammenhänge zwischen Ernährung und Gesundheit.',
     href: '/wissen',
   },
   {
     icon: '👤',
     title: 'Dein Profil',
-    description: 'Waehle deine Gesundheitsthemen und erhalte personalisierte Empfehlungen.',
+    description: 'Wähle deine Gesundheitsthemen und erhalte personalisierte Empfehlungen.',
     href: '/profile',
   },
 ];
@@ -45,11 +45,11 @@ const conditions = [
   { icon: '❤️', name: 'Bluthochdruck', id: 'bluthochdruck' },
   { icon: '🩸', name: 'Diabetes Typ 2', id: 'diabetes-typ-2' },
   { icon: '🫀', name: 'Hohes Cholesterin', id: 'hohes-cholesterin' },
-  { icon: '🦴', name: 'Entzuendungen & Arthrose', id: 'entzuendungen-arthrose' },
+  { icon: '🦴', name: 'Entzündungen & Arthrose', id: 'entzuendungen-arthrose' },
   { icon: '🫁', name: 'Verdauungsbeschwerden', id: 'verdauungsbeschwerden' },
   { icon: '🔴', name: 'Eisenmangel', id: 'eisenmangel' },
-  { icon: '⚖️', name: 'Uebergewicht', id: 'uebergewicht' },
-  { icon: '🧠', name: 'Migraene', id: 'migraene' },
+  { icon: '⚖️', name: 'Übergewicht', id: 'uebergewicht' },
+  { icon: '🧠', name: 'Migräne', id: 'migraene' },
 ];
 
 export default function HomePage() {
@@ -62,25 +62,25 @@ export default function HomePage() {
           <span className="text-primary">Besser leben.</span>
         </h1>
         <p className="text-lg text-charcoal-light max-w-xl mx-auto mb-8">
-          Erfahre, welche Ernaehrung bei deinen Gesundheitsthemen hilft.
+          Erfahre, welche Ernährung bei deinen Gesundheitsthemen hilft.
           Finde passende Rezepte, plane deine Mahlzeiten und lerne die
-          Zusammenhaenge zwischen Ernaehrung und Wohlbefinden kennen.
+          Zusammenhänge zwischen Ernährung und Wohlbefinden kennen.
         </p>
         <div className="flex justify-center gap-4">
           <Link href="/conditions">
             <Button size="lg">Gesundheitsthemen entdecken</Button>
           </Link>
           <Link href="/recipes">
-            <Button variant="secondary" size="lg">Rezepte durchstoebern</Button>
+            <Button variant="secondary" size="lg">Rezepte durchstöbern</Button>
           </Link>
         </div>
       </section>
 
       {/* Health Conditions Quick Access */}
       <section className="max-w-6xl mx-auto px-4 pb-16">
-        <h2 className="font-heading text-3xl text-center text-charcoal mb-3">Wobei kann Ernaehrung helfen?</h2>
+        <h2 className="font-heading text-3xl text-center text-charcoal mb-3">Wobei kann Ernährung helfen?</h2>
         <p className="text-center text-charcoal-light mb-8 max-w-xl mx-auto">
-          Waehle ein Gesundheitsthema und erfahre, was du essen solltest und was du besser meidest.
+          Wähle ein Gesundheitsthema und erfahre, was du essen solltest und was du besser meidest.
         </p>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           {conditions.map(({ icon, name, id }) => (
@@ -98,9 +98,9 @@ export default function HomePage() {
       <section className="max-w-3xl mx-auto px-4 pb-12">
         <div className="bg-accent/10 border border-accent/30 rounded-2xl p-6 text-center">
           <p className="text-sm text-charcoal-light">
-            <strong className="text-charcoal">Wichtiger Hinweis:</strong> Diese App ersetzt keine aerztliche Beratung.
-            Die Informationen dienen der allgemeinen Aufklaerung ueber ernaehrungsbezogene Zusammenhaenge.
-            Bei gesundheitlichen Beschwerden wenden Sie sich bitte an Ihren Arzt oder Ihre Aerztin.
+            <strong className="text-charcoal">Wichtiger Hinweis:</strong> Diese App ersetzt keine ärztliche Beratung.
+            Die Informationen dienen der allgemeinen Aufklärung über ernährungsbezogene Zusammenhänge.
+            Bei gesundheitlichen Beschwerden wenden Sie sich bitte an Ihren Arzt oder Ihre Ärztin.
           </p>
         </div>
       </section>
@@ -110,20 +110,20 @@ export default function HomePage() {
         <div className="relative bg-gradient-to-br from-sage via-white to-secondary/5 rounded-3xl p-8 md:p-12 text-center overflow-hidden border border-primary/10">
           <div className="relative z-10">
             <h2 className="font-heading text-2xl md:text-3xl text-charcoal mb-4">
-              Ernaehrung als Schluessel zur Gesundheit
+              Ernährung als Schlüssel zur Gesundheit
             </h2>
             <p className="text-charcoal-light leading-relaxed mb-4">
-              Was wir essen, beeinflusst unseren Koerper mehr als die meisten Menschen denken.
-              Ob Bluthochdruck, Diabetes, Cholesterin oder Entzuendungen — die richtige Ernaehrung
+              Was wir essen, beeinflusst unseren Körper mehr als die meisten Menschen denken.
+              Ob Bluthochdruck, Diabetes, Cholesterin oder Entzündungen — die richtige Ernährung
               kann einen grossen Unterschied machen.
             </p>
             <p className="text-charcoal-light leading-relaxed mb-4">
-              Heilkueche hilft dir dabei, die richtigen Lebensmittel fuer deine Situation zu finden.
+              Heilküche hilft dir dabei, die richtigen Lebensmittel für deine Situation zu finden.
               Mit Rezepten, die gezielt auf Gesundheitsthemen abgestimmt sind, einem praktischen
-              Mahlzeitenplaner und fundiertem Ernaehrungswissen.
+              Mahlzeitenplaner und fundiertem Ernährungswissen.
             </p>
             <p className="text-charcoal leading-relaxed font-medium">
-              Fuer alle Menschen, die ihre Gesundheit durch bewusste Ernaehrung unterstuetzen moechten.
+              Für alle Menschen, die ihre Gesundheit durch bewusste Ernährung unterstützen möchten.
             </p>
           </div>
         </div>
@@ -157,12 +157,12 @@ export default function HomePage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[
             {
-              quote: 'Seit ich die Rezepte fuer meinen Bluthochdruck nutze, sind meine Werte deutlich besser. Und das Essen schmeckt trotzdem wunderbar!',
+              quote: 'Seit ich die Rezepte für meinen Bluthochdruck nutze, sind meine Werte deutlich besser. Und das Essen schmeckt trotzdem wunderbar!',
               name: 'Thomas, 52',
-              detail: 'Zuerich',
+              detail: 'Zürich',
             },
             {
-              quote: 'Endlich verstehe ich, welche Lebensmittel meinem Koerper guttun. Der Mahlzeitenplaner spart mir jede Woche Zeit beim Einkaufen.',
+              quote: 'Endlich verstehe ich, welche Lebensmittel meinem Körper guttun. Der Mahlzeitenplaner spart mir jede Woche Zeit beim Einkaufen.',
               name: 'Sandra, 44',
               detail: 'Bern',
             },

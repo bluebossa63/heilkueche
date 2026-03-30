@@ -63,7 +63,7 @@ function ConditionDetail() {
       <div className="max-w-4xl mx-auto px-4 py-16 text-center">
         <div className="text-5xl mb-4">🩺</div>
         <h2 className="font-heading text-2xl text-charcoal mb-2">Gesundheitsthema nicht gefunden</h2>
-        <Link href="/conditions" className="text-primary hover:underline">Zurueck zur Uebersicht</Link>
+        <Link href="/conditions" className="text-primary hover:underline">Zurück zur Übersicht</Link>
       </div>
     );
   }
@@ -82,7 +82,7 @@ function ConditionDetail() {
       {/* Disclaimer */}
       <div className="bg-accent/10 border border-accent/30 rounded-xl p-4 mb-8">
         <p className="text-xs text-charcoal-light text-center">
-          Diese App ersetzt keine aerztliche Beratung. Besprechen Sie Ernaehrungsumstellungen immer mit Ihrem Arzt.
+          Diese App ersetzt keine ärztliche Beratung. Besprechen Sie Ernährungsumstellungen immer mit Ihrem Arzt.
         </p>
       </div>
 
