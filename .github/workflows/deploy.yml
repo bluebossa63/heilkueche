@@ -31,6 +31,8 @@ jobs:
             require('fs').writeFileSync('./deploy-api/package.json', JSON.stringify(pkg, null, 2));
           "
           cd deploy-api && npm install --production --ignore-scripts
+          mkdir -p node_modules/@heilkueche/shared
+          cp -r ../packages/shared/dist/. node_modules/@heilkueche/shared/ 2>/dev/null || cp -r ../packages/shared/src/. node_modules/@heilkueche/shared/
       - uses: azure/webapps-deploy@v3
         with:
           app-name: heilkueche-api-prod
