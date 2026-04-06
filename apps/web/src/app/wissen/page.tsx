@@ -12,7 +12,8 @@ interface Article {
   summary: string;
   content: string;
   category: string;
-  icon: string;
+  icon?: string;
+  readingTimeMinutes?: number;
 }
 
 // Fallback articles (always shown, even without API data)
@@ -196,41 +197,56 @@ export default function WissenPage() {
                 onClick={() => setExpandedId(isExpanded ? null : article.id)}
                 className="w-full text-left p-6 flex items-start gap-4 hover:bg-sage/50 transition-colors"
               >
-                <span className="text-3xl shrink-0">{article.icon}</span>
+                {article.icon && <span className="text-3xl shrink-0">{article.icon}</span>}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full font-medium">
                       {article.category}
                     </span>
+                    {article.readingTimeMinutes && (
+                      <span className="text-xs text-charcoal-light">{article.readingTimeMinutes} Min. Lesezeit</span>
+                    )}
                   </div>
                   <h2 className="font-heading text-lg text-charcoal mb-1">{article.title}</h2>
                   <p className="text-charcoal-light text-sm leading-relaxed">{article.summary}</p>
                 </div>
-                <span className={`text-charcoal-light text-lg transition-transform ${isExpanded ? 'rotate-180' : ''}`}>
+                <span className={`text-charcoal-light text-lg transition-transform shrink-0 ${isExpanded ? 'rotate-180' : ''}`}>
                   &#9660;
                 </span>
               </button>
               {isExpanded && (
                 <div className="px-6 pb-6 pt-2 border-t border-sage-dark">
-                  <div className="prose prose-sm max-w-none">
+                  <div className="space-y-3">
                     {article.content.split('\n\n').map((paragraph, i) => {
-                      if (paragraph.includes(':\n') || paragraph.endsWith(':')) {
-                        const [title, ...items] = paragraph.split('\n');
+                      // Markdown h2 headings
+                      if (paragraph.startsWith('## ')) {
+                        return <h3 key={i} className="font-heading text-base font-semibold text-charcoal mt-4 mb-1">{paragraph.replace(/^## /, '')}</h3>;
+                      }
+                      // Markdown h3 headings
+                      if (paragraph.startsWith('### ')) {
+                        return <h4 key={i} className="font-semibold text-sm text-charcoal mt-3 mb-1">{paragraph.replace(/^### /, '')}</h4>;
+                      }
+                      // Bullet list paragraphs
+                      const lines = paragraph.split('\n');
+                      const isList = lines.some(l => l.startsWith('- ') || l.startsWith('* ') || l.match(/^\d+\. /));
+                      if (isList) {
                         return (
-                          <div key={i} className="mb-4">
-                            <p className="font-semibold text-charcoal mb-2">{title}</p>
-                            <ul className="space-y-1">
-                              {items.filter(Boolean).map((item, j) => (
+                          <ul key={i} className="space-y-1">
+                            {lines.filter(Boolean).map((line, j) => {
+                              const text = line.replace(/^[-*] /, '').replace(/^\d+\. /, '').replace(/\*\*(.*?)\*\*/g, '$1');
+                              return (
                                 <li key={j} className="text-sm text-charcoal-light flex items-start gap-2">
                                   <span className="text-primary mt-0.5 shrink-0">&#8226;</span>
-                                  {item.replace(/^- /, '')}
+                                  {text}
                                 </li>
-                              ))}
-                            </ul>
-                          </div>
+                              );
+                            })}
+                          </ul>
                         );
                       }
-                      return <p key={i} className="text-sm text-charcoal-light leading-relaxed mb-3">{paragraph}</p>;
+                      // Plain text (strip bold markdown)
+                      const text = paragraph.replace(/\*\*(.*?)\*\*/g, '$1');
+                      return <p key={i} className="text-sm text-charcoal-light leading-relaxed">{text}</p>;
                     })}
                   </div>
                 </div>
